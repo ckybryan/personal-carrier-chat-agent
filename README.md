@@ -1,0 +1,126 @@
+# Career Conversation - TypeScript Version
+
+This is a TypeScript port of the Python career conversation chatbot. It provides the same functionality as the original Python version but runs on Node.js with Express.js instead of Gradio.
+
+## Features
+
+- AI-powered career conversation using OpenAI's GPT-4o-mini
+- Tool integration for recording user details and unknown questions
+- Push notifications via Pushover
+- PDF parsing for LinkedIn profile data
+- Web-based chat interface
+
+## Prerequisites
+
+- Node.js (version 16 or higher)
+- npm or yarn package manager
+- OpenAI API key
+- Pushover account and API keys (optional)
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables:**
+   Create a `.env` file in this directory with:
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   PUSHOVER_USER=your_pushover_user_key_here
+   PUSHOVER_TOKEN=your_pushover_token_here
+   ```
+
+3. **Prepare your profile data:**
+   - Add your `linkedin.pdf` file to the `me/` directory
+   - Edit `me/summary.txt` with your career summary
+
+4. **Build the TypeScript code:**
+   ```bash
+   npm run build
+   ```
+
+## Running the Application
+
+### Development mode (with auto-reload):
+```bash
+npm run dev
+```
+
+### Production mode:
+```bash
+npm start
+```
+
+The application will be available at `http://localhost:3000`
+
+## Key Differences from Python Version
+
+1. **Web Framework**: Uses Express.js instead of Gradio
+2. **Chat Interface**: Custom HTML/CSS/JavaScript interface instead of Gradio's UI
+3. **PDF Processing**: Uses `pdf-parse` instead of `pypdf`
+4. **HTTP Requests**: Uses `axios` instead of `requests`
+5. **Environment Variables**: Uses `dotenv` package
+6. **Type Safety**: Full TypeScript typing for better development experience
+
+## File Structure
+
+- `app.ts` - Main chatbot logic and Me class
+- `server.ts` - Express.js web server
+- `public/index.html` - Chat interface UI
+- `package.json` - Node.js dependencies and scripts
+- `tsconfig.json` - TypeScript configuration
+- `me/` - Directory for your profile data
+  - `linkedin.pdf` - Your LinkedIn profile as PDF (add this file)
+  - `summary.txt` - Your career summary text (edit this file)
+  - `README.md` - Instructions for profile setup
+
+## API Endpoints
+
+- `GET /` - Serves the chat interface
+- `POST /chat` - Handles chat messages
+  - Request body: `{ message: string, history: Message[] }`
+  - Response: `{ response: string }`
+
+## Tool Functions
+
+The chatbot includes two main tools:
+
+1. **record_user_details** - Records when users provide contact information
+2. **record_unknown_question** - Records questions the bot cannot answer
+
+Both tools send push notifications via Pushover when triggered.
+
+## Development
+
+To modify the chatbot behavior:
+
+1. Edit the `Me` class in `app.ts`
+2. Update tool functions as needed
+3. Modify the system prompt in the `systemPrompt()` method
+4. Rebuild with `npm run build`
+
+## Deployment
+
+This TypeScript version can be deployed to various platforms:
+
+- **Heroku**: Add a `Procfile` with `web: node dist/server.js`
+- **Railway**: Works out of the box
+- **Vercel**: May need serverless function adaptation
+- **DigitalOcean App Platform**: Configure build and run commands
+- **AWS/GCP/Azure**: Deploy as containerized application
+
+Make sure to set environment variables in your deployment platform.
+
+## Troubleshooting
+
+1. **Module not found errors**: Run `npm install` to install dependencies
+2. **TypeScript compilation errors**: Check `tsconfig.json` configuration
+3. **Environment variables not loaded**: Ensure `.env` file exists and is properly formatted
+4. **PDF parsing issues**: Verify `me/linkedin.pdf` exists and is readable
+5. **Port already in use**: Change the PORT environment variable or kill existing processes
+
+## License
+
+MIT License - feel free to modify and use as needed.
