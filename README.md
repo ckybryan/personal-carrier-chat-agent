@@ -2,6 +2,8 @@
 
 This is a TypeScript port of the Python career conversation chatbot. It provides the same functionality as the original Python version but runs on Node.js with Express.js instead of Gradio.
 
+**Learning Project**: This project was created as part of learning from the Udemy course by [Ed Donner](https://www.linkedin.com/in/eddonner). You can find the course [here](https://www.udemy.com/share/10dasB3@zE174MbYSFUi3hhv6wzxhjI7IcgVciRBPeWv8_yvDdgUJOLW_Y-8FOATBFGTHIX-/).
+
 ## Features
 
 - AI-powered career conversation using OpenAI's GPT-4o-mini
