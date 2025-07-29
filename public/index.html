@@ -5,83 +5,271 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Conversation</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .chat-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .messages {
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            background-color: #fafafa;
-        }
-        .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .user-message {
-            background-color: #007bff;
-            color: white;
-            margin-left: 20%;
-        }
-        .assistant-message {
-            background-color: #e9ecef;
-            color: #333;
-            margin-right: 20%;
-        }
-        .input-container {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        #messageInput {
+
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .chat-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .messages {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
         }
+
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 6px;
+        }
+
+        .assistant-message {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .assistant-message .message-content {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        #messageInput {
+            width: 100%;
+            padding: 12px 50px 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            font-size: 15px;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        #messageInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
         #sendButton {
-            padding: 12px 20px;
-            background-color: #007bff;
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 50%;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
             font-size: 16px;
         }
-        #sendButton:hover {
-            background-color: #0056b3;
+
+        #sendButton:hover:not(:disabled) {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
+
         #sendButton:disabled {
-            background-color: #6c757d;
+            background: #9ca3af;
             cursor: not-allowed;
+            transform: translateY(-50%) scale(1);
         }
+
         .typing {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-style: italic;
-            color: #666;
+            color: #6b7280;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #6b7280;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #6b7280;
+            margin-top: 50px;
+            font-size: 16px;
+        }
+
+        .welcome-message h2 {
+            margin-bottom: 10px;
+            color: #374151;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            
+            .chat-container {
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .chat-header {
+                border-radius: 0;
+            }
+            
+            .message-content {
+                max-width: 90%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <h1>Career Conversation</h1>
-        <div id="messages" class="messages"></div>
+        <div class="chat-header">
+            <h1>Career Conversation</h1>
+            <p>Ask me anything about my professional journey</p>
+        </div>
+        <div id="messages" class="messages">
+            <div class="welcome-message">
+                <h2>👋 Welcome!</h2>
+                <p>I'm here to discuss my career, experience, and professional background.<br>
+                Feel free to ask me anything!</p>
+            </div>
+        </div>
         <div class="input-container">
-            <input type="text" id="messageInput" placeholder="Ask me about my career..." />
-            <button id="sendButton">Send</button>
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Ask me about my career..." />
+                <button id="sendButton">➤</button>
+            </div>
         </div>
     </div>
 
@@ -95,7 +283,12 @@
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
-            messageDiv.textContent = content;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.textContent = content;
+            
+            messageDiv.appendChild(messageContent);
             messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
@@ -107,11 +300,29 @@
         }
 
         function showTyping() {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message assistant-message typing';
-            typingDiv.textContent = 'Typing...';
-            typingDiv.id = 'typing';
-            messagesDiv.appendChild(typingDiv);
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant-message';
+            messageDiv.id = 'typing';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content typing';
+            
+            const typingText = document.createElement('span');
+            typingText.textContent = 'Thinking';
+            
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'typing-dots';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'typing-dot';
+                dotsContainer.appendChild(dot);
+            }
+            
+            messageContent.appendChild(typingText);
+            messageContent.appendChild(dotsContainer);
+            messageDiv.appendChild(messageContent);
+            messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
@@ -125,6 +336,12 @@
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message) return;
+
+            // Hide welcome message if it exists
+            const welcomeMessage = document.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.style.display = 'none';
+            }
 
             // Disable input
             messageInput.disabled = true;
