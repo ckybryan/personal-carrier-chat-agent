@@ -153,11 +153,32 @@ To modify the chatbot behavior:
 
 This TypeScript version can be deployed to various platforms:
 
-- **Heroku**: Add a `Procfile` with `web: node dist/server.js`
-- **Railway**: Works out of the box
+- **Railway**: 
+  - Set environment variables in Railway dashboard
+  - The project includes `railway.json` configuration
+  - Build command: `npm run build`
+  - Start command: `npm start`
+  - Health check endpoint: `/health`
+- **Heroku**: Add a `Procfile` with `web: node dist/src/server.js`
 - **Vercel**: May need serverless function adaptation
 - **DigitalOcean App Platform**: Configure build and run commands
 - **AWS/GCP/Azure**: Deploy as containerized application
+
+### Railway Deployment Notes
+
+1. **Environment Variables**: Set these in Railway dashboard:
+   - `OPENAI_API_KEY` (required)
+   - `PUSHOVER_USER` (optional)
+   - `PUSHOVER_TOKEN` (optional)
+   - `NODE_ENV=production`
+
+2. **Build Process**: Railway will automatically run `npm install` and `npm run build`
+
+3. **Troubleshooting Railway**:
+   - Check the build logs for TypeScript compilation errors
+   - Verify environment variables are set correctly
+   - Use `/health` endpoint to test if server is running
+   - Ensure your `me/` directory files are included in the deployment
 
 Make sure to set environment variables in your deployment platform.
 
@@ -168,6 +189,11 @@ Make sure to set environment variables in your deployment platform.
 3. **Environment variables not loaded**: Ensure `.env` file exists and is properly formatted
 4. **PDF parsing issues**: Verify `me/linkedin.pdf` exists and is readable
 5. **Port already in use**: Change the PORT environment variable or kill existing processes
+6. **Railway deployment failures**:
+   - Check build logs for compilation errors
+   - Verify environment variables are set in Railway dashboard
+   - Test health endpoint: `your-app-url.railway.app/health`
+   - Ensure OpenAI API key is valid and has credits
 
 ## License
 
