@@ -8,7 +8,7 @@ const port = parseInt(process.env.PORT || '3000', 10);
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Add request logging for debugging
 app.use((req, res, next) => {
@@ -35,7 +35,7 @@ app.get('/health', (req, res) => {
  */
 app.get('/', (req, res) => {
   try {
-    res.sendFile(path.join(__dirname, '../../public/index.html'));
+    res.sendFile(path.join(__dirname, '../public/index.html'));
   } catch (error) {
     console.error('Error serving index.html:', error);
     res.status(500).send('Server error');
@@ -66,7 +66,7 @@ app.post('/chat', async (req, res) => {
 // Start the server
 app.listen(port, '0.0.0.0', () => {
   console.log(`🚀 Server running at http://0.0.0.0:${port}`);
-  console.log(`📁 Serving static files from: ${path.join(__dirname, '../../public')}`);
+  console.log(`📁 Serving static files from: ${path.join(__dirname, '../public')}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔧 Health check available at: http://0.0.0.0:${port}/health`);
 });

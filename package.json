@@ -2,10 +2,10 @@
   "name": "career-chat-ts",
   "version": "1.0.0",
   "description": "TypeScript version of the career conversation chatbot",
-  "main": "dist/src/app.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/src/server.js",
+    "start": "node dist/server.js",
     "dev": "ts-node src/server.ts",
     "watch": "tsc --watch",
     "dev:app": "ts-node src/app.ts"
