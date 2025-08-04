@@ -2,13 +2,13 @@
   "name": "career-chat-ts",
   "version": "1.0.0",
   "description": "TypeScript version of the career conversation chatbot",
-  "main": "dist/app.js",
+  "main": "dist/src/app.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "ts-node server.ts",
+    "start": "node dist/src/server.js",
+    "dev": "ts-node src/server.ts",
     "watch": "tsc --watch",
-    "dev:app": "ts-node app.ts"
+    "dev:app": "ts-node src/app.ts"
   },
   "dependencies": {
     "openai": "^4.28.4",

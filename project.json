@@ -1,0 +1,24 @@
+{
+  "name": "Career Chat Agent",
+  "version": "1.0.0",
+  "description": "TypeScript-based career conversation chatbot",
+  "structure": {
+    "src/": "TypeScript source files",
+    "public/": "Static web assets (HTML, CSS, JS)",
+    "public/css/": "Stylesheet files",
+    "public/js/": "Client-side JavaScript",
+    "me/": "Personal profile data",
+    "dist/": "Compiled TypeScript output"
+  },
+  "architecture": {
+    "backend": "Node.js + Express.js + TypeScript",
+    "frontend": "Vanilla HTML/CSS/JavaScript",
+    "ai": "OpenAI GPT-4o-mini",
+    "notifications": "Pushover API"
+  },
+  "endpoints": {
+    "GET /": "Serve chat interface",
+    "POST /chat": "Handle chat messages",
+    "GET /health": "Health check"
+  }
+}

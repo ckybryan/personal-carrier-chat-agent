@@ -1,114 +1,21 @@
 import * as dotenv from 'dotenv';
 import OpenAI from 'openai';
 import * as fs from 'fs';
-import axios from 'axios';
-// Note: You'll need to install pdf-parse for PDF reading: npm install pdf-parse
 import pdf from 'pdf-parse';
+import { 
+  ToolCall, 
+  Message, 
+  ChatResponse
+} from './types';
+import { tools, toolFunctions } from './tools';
 
 // Load environment variables
 dotenv.config({ override: true });
 
-interface ToolCall {
-  id: string;
-  function: {
-    name: string;
-    arguments: string;
-  };
-}
-
-interface Message {
-  role: 'system' | 'user' | 'assistant' | 'tool';
-  content: string;
-  tool_call_id?: string;
-}
-
-interface ChatResponse {
-  choices: Array<{
-    message: {
-      content: string;
-      tool_calls?: ToolCall[];
-    };
-    finish_reason: string;
-  }>;
-}
-
-async function push(text: string): Promise<void> {
-  try {
-    await axios.post('https://api.pushover.net/1/messages.json', {
-      token: process.env.PUSHOVER_TOKEN,
-      user: process.env.PUSHOVER_USER,
-      message: text,
-    });
-  } catch (error) {
-    console.error('Error sending push notification:', error);
-  }
-}
-
-function record_user_details(
-  email: string, 
-  name: string = "Name not provided", 
-  notes: string = "not provided"
-): { recorded: string } {
-  push(`Recording ${name} with email ${email} and notes ${notes}`);
-  return { recorded: "ok" };
-}
-
-function record_unknown_question(question: string): { recorded: string } {
-  push(`Recording ${question}`);
-  return { recorded: "ok" };
-}
-
-const record_user_details_json = {
-  name: "record_user_details",
-  description: "Use this tool to record that a user is interested in being in touch and provided an email address",
-  parameters: {
-    type: "object",
-    properties: {
-      email: {
-        type: "string",
-        description: "The email address of this user"
-      },
-      name: {
-        type: "string",
-        description: "The user's name, if they provided it"
-      },
-      notes: {
-        type: "string",
-        description: "Any additional information about the conversation that's worth recording to give context"
-      }
-    },
-    required: ["email"],
-    additionalProperties: false
-  }
-};
-
-const record_unknown_question_json = {
-  name: "record_unknown_question",
-  description: "Always use this tool to record any question that couldn't be answered as you didn't know the answer",
-  parameters: {
-    type: "object",
-    properties: {
-      question: {
-        type: "string",
-        description: "The question that couldn't be answered"
-      }
-    },
-    required: ["question"],
-    additionalProperties: false
-  }
-};
-
-const tools = [
-  { type: "function", function: record_user_details_json },
-  { type: "function", function: record_unknown_question_json }
-];
-
-// Global function registry for tool calls
-const toolFunctions: { [key: string]: Function } = {
-  record_user_details,
-  record_unknown_question
-};
-
+/**
+ * Profile and Chat Management Class
+ * Handles AI conversation and profile data
+ */
 class Me {
   private openai: OpenAI;
   private name: string;

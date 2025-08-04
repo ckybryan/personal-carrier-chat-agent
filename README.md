@@ -65,18 +65,32 @@ The application will be available at `http://localhost:3000`
 4. **HTTP Requests**: Uses `axios` instead of `requests`
 5. **Environment Variables**: Uses `dotenv` package
 6. **Type Safety**: Full TypeScript typing for better development experience
+7. **Clean Architecture**: Separated concerns with modular TypeScript files
+8. **Static Assets**: Organized CSS and JavaScript in separate files
 
 ## File Structure
 
-- `app.ts` - Main chatbot logic and Me class
-- `server.ts` - Express.js web server
-- `public/index.html` - Chat interface UI
-- `package.json` - Node.js dependencies and scripts
-- `tsconfig.json` - TypeScript configuration
-- `me/` - Directory for your profile data
-  - `linkedin.pdf` - Your LinkedIn profile as PDF (add this file)
-  - `summary.txt` - Your career summary text (edit this file)
-  - `README.md` - Instructions for profile setup
+```
+├── src/                    # TypeScript source files
+│   ├── app.ts             # Main chatbot logic and Me class
+│   ├── server.ts          # Express.js web server
+│   ├── tools.ts           # AI tool functions and definitions
+│   └── types.ts           # TypeScript type definitions
+├── public/                # Static web assets
+│   ├── css/
+│   │   └── styles.css     # Application styles
+│   ├── js/
+│   │   └── chat.js        # Client-side chat functionality
+│   └── index.html         # Clean HTML structure
+├── me/                    # Personal profile data
+│   ├── linkedin.pdf       # Your LinkedIn profile as PDF
+│   ├── summary.txt        # Your career summary text
+│   └── README.md          # Profile setup instructions
+├── dist/                  # Compiled TypeScript output
+├── package.json           # Node.js dependencies and scripts
+├── tsconfig.json          # TypeScript configuration
+└── project.json           # Project structure documentation
+```
 
 ## API Endpoints
 
@@ -96,10 +110,42 @@ Both tools send push notifications via Pushover when triggered.
 
 ## Development
 
+### Project Structure
+
+The project follows a clean separation of concerns:
+
+- **Backend (`src/`)**: TypeScript files for server logic, AI integration, and tool functions
+- **Frontend (`public/`)**: Static assets with separated HTML, CSS, and JavaScript
+- **Types (`src/types.ts`)**: Centralized type definitions for better type safety
+- **Tools (`src/tools.ts`)**: AI tool functions and OpenAI API definitions
+
+### Making Changes
+
+1. **Backend Logic**: Edit files in `src/` directory
+2. **Styling**: Update `public/css/styles.css`
+3. **Frontend Behavior**: Modify `public/js/chat.js`
+4. **HTML Structure**: Edit `public/index.html`
+
+### Building and Running
+
+```bash
+# Development with auto-reload
+npm run dev
+
+# Build TypeScript
+npm run build
+
+# Run production build
+npm start
+
+# Watch for TypeScript changes
+npm run watch
+```
+
 To modify the chatbot behavior:
 
-1. Edit the `Me` class in `app.ts`
-2. Update tool functions as needed
+1. Edit the `Me` class in `src/app.ts`
+2. Update tool functions in `src/tools.ts`
 3. Modify the system prompt in the `systemPrompt()` method
 4. Rebuild with `npm run build`
 
